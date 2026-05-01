@@ -1,301 +1,1463 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>目前時間顯示</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-    }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      font-family: Arial, sans-serif;
-      background: #f4f6fb;
-      padding: 24px 0;
-    }
 
-    .page {
-      width: min(92vw, 680px);
-      display: grid;
-      gap: 16px;
-    }
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=1, minimum-scale=1.0, maximum-scale=3.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="keywords" content="宜蘭大學,NIU" />
+<meta name="description" content="國立宜蘭大學首頁" />
 
-    .card {
-      width: min(90vw, 520px);
-      margin: 0 auto;
-      padding: 28px;
-      border-radius: 16px;
-      background: #ffffff;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-      text-align: center;
-    }
+<style type="text/css">
+input.text:focus{
+background-color: #7FFF00;
+color: #000;
+}
+</style>
 
-    h1 {
-      margin: 0 0 16px;
-      font-size: 24px;
-      color: #222;
-    }
+<meta property="og:image"  content="/images/favicon.ico" />
 
-    #time {
-      margin: 18px 0 24px;
-      font-size: 32px;
-      font-weight: 700;
-      color: #0b57d0;
-      letter-spacing: 1px;
-    }
+<title>國立宜蘭大學  - 國立宜蘭大學</title>
 
-    button {
-      border: none;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #0b57d0;
-      color: #fff;
-    }
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+<link rel="bookmark" href="/images/favicon.ico" type="image/x-icon" />
 
-    button:hover {
-      background: #0848ad;
-    }
 
-    .chat-card {
-      text-align: left;
-      width: min(90vw, 620px);
-      margin: 0 auto;
-    }
-
-    .chat-title {
-      margin: 0 0 12px;
-      color: #222;
-      font-size: 22px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .field label {
-      color: #333;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #ccd3e0;
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 14px;
-      font-family: inherit;
-      background: #fff;
-      color: #222;
-    }
-
-    #chatLog {
-      height: 280px;
-      overflow-y: auto;
-      border: 1px solid #d7ddeb;
-      border-radius: 12px;
-      padding: 12px;
-      background: #fafcff;
-      margin-bottom: 12px;
-    }
-
-    .msg {
-      padding: 8px 10px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      line-height: 1.4;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .msg.user {
-      background: #e7f0ff;
-    }
-
-    .msg.assistant {
-      background: #eef7eb;
-    }
-
-    .chat-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      align-items: start;
-    }
-
-    .status {
-      margin-top: 10px;
-      color: #555;
-      font-size: 13px;
-      min-height: 20px;
-    }
-
-    @media print {
-      button,
-      .chat-card {
-        display: none;
-      }
-    }
-  </style>
+<link rel="stylesheet" href="/var/file/0/1000/mobilestyle/combine-zh-tw.css?t=9e473199d9" type="text/css" />
+<script language="javascript"><!--
+ var isHome = true 
+ --></script>
+<script language="javascript"><!--
+ var isExpanMenu = false 
+ --></script>
+<script type="text/javascript" src="/var/file/js/m_20260212.js" ></script>
 </head>
-<body>
-  <div class="page">
-    <div class="card">
-      <h1>現在時間</h1>
-      <div id="time">--:--:--</div>
-      <button onclick="window.print()">列印畫面</button>
-    </div>
+ 
+<body class="page_mobilehome webfree webw3c">
 
-    <div class="card chat-card">
-      <h2 class="chat-title">小聊天室（ChatGPT）</h2>
+<div class="wrap">
 
-      <div class="field">
-        <label for="model">模型名稱</label>
-        <input id="model" type="text" value="gpt-5.5" />
-      </div>
 
-      <div class="field">
-        <label>金鑰來源</label>
-        <input type="text" value=".env (由後端讀取)" disabled />
-      </div>
+<a href="#start-C" class="focusable" title="跳到主要內容區">跳到主要內容區</a>
 
-      <div id="chatLog"></div>
 
-      <div class="chat-row">
-        <textarea id="userInput" rows="3" placeholder="輸入你想問的內容..."></textarea>
-        <button id="sendBtn" type="button">送出</button>
-      </div>
-      <div class="status" id="status"></div>
-    </div>
-  </div>
+<div class="fpbgvideo"></div>
+<div class="minner">
 
-  <script>
-    const timeEl = document.getElementById("time");
-    const modelEl = document.getElementById("model");
-    const userInputEl = document.getElementById("userInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const chatLogEl = document.getElementById("chatLog");
-    const statusEl = document.getElementById("status");
-    const messages = [];
+<div id="Dyn_head">
+<div class="header">
+	<div class="minner container">
 
-    function updateTime() {
-      const now = new Date();
-      const text = now.toLocaleString("zh-TW", {
-        hour12: false,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      });
-      timeEl.textContent = text;
-    }
 
-    updateTime();
-    setInterval(updateTime, 1000);
 
-    // 页面加载时做一次健康检查：后端是否运行、.env 是否有 OPENAI_API_KEY
-    (async () => {
-      try {
-        const resp = await fetch("/api/health", { method: "GET" });
-        const data = await resp.json();
-        if (!data.hasOpenAIKey) {
-          statusEl.textContent = "后端未找到 OPENAI_API_KEY，请检查 .env。";
-        }
-      } catch {
-        statusEl.textContent = "无法连接到后端（http://localhost:3000）。请先运行 server.js。";
-      }
-    })();
 
-    function appendMessage(role, content) {
-      const div = document.createElement("div");
-      div.className = "msg " + role;
-      div.textContent = (role === "user" ? "你： " : "ChatGPT： ") + content;
-      chatLogEl.appendChild(div);
-      chatLogEl.scrollTop = chatLogEl.scrollHeight;
-    }
 
-    async function sendMessage() {
-      const model = modelEl.value.trim() || "gpt-4o-mini";
-      const text = userInputEl.value.trim();
 
-      if (!text) {
-        statusEl.textContent = "請先輸入訊息。";
-        return;
-      }
 
-      messages.push({ role: "user", content: text });
-      appendMessage("user", text);
-      userInputEl.value = "";
-      statusEl.textContent = "ChatGPT 回覆中...";
-      sendBtn.disabled = true;
+	
+<div class="selfhead">
+		<div class="meditor">
+	
+      
+         
+			<div class="head">
+<div class="mlogo"><h1><a href="/?Lang=zh-tw" title="國立宜蘭大學"><img alt="宜蘭大學Logo" src="/var/file/69/1069/img/1143/mlogo.png" /> </a></h1></div>
 
-      try {
-        const resp = await fetch("/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            model,
-            messages
-          })
-        });
+<div class="minnav">
+				
+				
 
-        const rawText = await resp.text();
-        let data = {};
-        if (rawText) {
-          try {
-            data = JSON.parse(rawText);
-          } catch {
-            throw new Error("伺服器回傳非 JSON，請確認是從 http://localhost:3000 開啟頁面。");
-          }
-        }
 
-        if (!resp.ok) {
-          const httpPart = data.error?.status
-            ? ` (HTTP ${data.error.status})`
-            : resp.status
-              ? ` (HTTP ${resp.status})`
-              : "";
-          const detailObj = data.error?.details || data.error?.raw || null;
-          const detailText = detailObj
-            ? `，細節：${typeof detailObj === "string" ? detailObj : JSON.stringify(detailObj)}`
-            : "";
-          throw new Error((data.error?.message || "API 呼叫失敗") + httpPart + detailText);
-        }
 
-        const reply = data.reply || "(沒有回覆內容)";
-        messages.push({ role: "assistant", content: reply });
-        appendMessage("assistant", reply);
-        statusEl.textContent = "完成。";
-      } catch (err) {
-        statusEl.textContent = "錯誤：" + (err.message || "未知錯誤");
-      } finally {
-        sendBtn.disabled = false;
-      }
-    }
+   
+<div class="headnavcust">
+	<div class="mnavbar mn-collapse">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".hd-minnav" aria-expanded="false">
+			<span class="glyphicons show_lines">Menu</span>
+		</button>
+		<div class="nav-toggle collapse navbar-collapse iosScrollToggle hd-minnav">
+			<div class="hdmenu">
+				<ul class="nav navbar-nav" id="a636d625eb8b806c6705e3886e27e3231_MenuTop_minnav">
+				
+					<li   id="Hln_3785" ><a  href="https://www.niu.edu.tw" title="Click to go 首頁">首頁</a></li>
+				
+					<li   id="Hln_3786" ><a  href="https://niu-en.niu.edu.tw/" target="_blank"  rel="noopener noreferrer"  title="Click to go English(另開新視窗)">English</a></li>
+				
+					<li   id="Hln_3787" ><a  href="/p/17-1000.php" title="Click to go 網站導覽">網站導覽</a></li>
+				
+        		
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
 
-    sendBtn.addEventListener("click", sendMessage);
-    userInputEl.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
+<script>
+$(document).ready(function(){
+	$(".mnavbar .navbar-toggle").click(function(){
+		$(this).toggleClass("open");
+		var ariaExpanded = $(this).attr('aria-expanded');
+		$(this).attr('aria-expanded',ariaExpanded !== 'true');
+	});
+   $(".mycollapse .navbar-toggle").click(function(){
+      $(this).toggleClass("open");
+      var ariaExpanded = $(this).attr('aria-expanded');
+      $(this).attr('aria-expanded',ariaExpanded !== 'true');
+   });
+   $('.iosScrollToggle').on('shown.bs.collapse', function () {
+		var togglePos = $(this).css('position');
+      if(togglePos !== 'static'){
+          ModalHelper.afterOpen();
       }
     });
-  </script>
+
+    $('.iosScrollToggle').on('hide.bs.collapse', function () {
+		var togglePos = $(this).css('position');
+      if(togglePos !== 'static'){
+			ModalHelper.beforeClose();
+      }
+    });
+	
+	
+	
+});
+</script>
+
+
+
+	
+
+<script language="javascript">
+
+	tabSwitch("a636d625eb8b806c6705e3886e27e3231_MenuTop_minnav");
+
+
+</script>
+
+         
+			</div>
+
+<div class="mycollapse">
+    <button class="navbar-toggle topmenu" data-target=".nav-toggle1" data-toggle="collapse" type="button">
+        <span class="glyphicons show_lines">Menu</span>
+    </button>
+
+    <div class="navbar-collapse collapse nav-toggle1" id="collapseExample3">
+        <div class="topnav">
+				
+				
+
+
+
+   
+<div class="headnavcust">
+	<div class="mnavbar mn-collapse">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".hd-topnav" aria-expanded="false">
+			<span class="glyphicons show_lines">Menu</span>
+		</button>
+		<div class="nav-toggle collapse navbar-collapse iosScrollToggle hd-topnav">
+			<div class="hdmenu">
+				<ul class="nav navbar-nav" id="a636d625eb8b806c6705e3886e27e3231_MenuTop_topnav">
+				
+					<li   id="Hln_3770" ><a  href="https://ccsys.niu.edu.tw/SSO/" target="_blank"  rel="noopener noreferrer"  title="Click to go 在校學生(另開新視窗)">在校學生</a></li>
+				
+					<li   id="Hln_3771" ><a  href="https://bulletin2.niu.edu.tw/files/11-1015-1792.php" target="_blank"  rel="noopener noreferrer"  title="Click to go 新生資訊(另開新視窗)">新生資訊</a></li>
+				
+					<li   id="Hln_3772" ><a  href="https://isa.niu.edu.tw/" target="_blank"  rel="noopener noreferrer"  title="Click to go International students(另開新視窗)">International students</a></li>
+				
+					<li   id="Hln_3773" ><a  href="https://minute.niu.edu.tw/" target="_blank"  rel="noopener noreferrer"  title="Click to go 畢業校友(另開新視窗)">畢業校友</a></li>
+				
+					<li   id="Hln_3774" ><a  href="https://ccsys.niu.edu.tw/SSO/" target="_blank"  rel="noopener noreferrer"  title="Click to go 教職員(另開新視窗)">教職員</a></li>
+				
+					<li   id="Hln_3775" ><a  href="https://rfma.niu.edu.tw/" target="_blank"  rel="noopener noreferrer"  title="Click to go 退休同仁(另開新視窗)">退休同仁</a></li>
+				
+					<li   id="Hln_3776" ><a  href="/p/412-1000-1306.php" title="Click to go 資訊服務">資訊服務</a></li>
+				
+        		
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+	
+
+<script language="javascript">
+
+	tabSwitch("a636d625eb8b806c6705e3886e27e3231_MenuTop_topnav");
+
+
+</script>
+
+         
+			</div>
+    </div>
+</div>
+
+<div class="mycollapse">
+    <button class="navbar-toggle" data-target=".nav-toggle" data-toggle="collapse" type="button">
+        <span class="glyphicons show_lines">Menu</span>
+    </button>
+
+<div class="navbar-collapse collapse nav-toggle" id="collapseExample2">
+    <div class="hsearch">
+    <div id="headsearch">&nbsp;</div>
+</div>
+
+<div class="mainmenu">
+				
+				
+
+
+
+   
+<div class="headnavcust">
+	<div class="mnavbar mn-collapse">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".hd-mainmenu" aria-expanded="false">
+			<span class="glyphicons show_lines">Menu</span>
+		</button>
+		<div class="nav-toggle collapse navbar-collapse iosScrollToggle hd-mainmenu">
+			<div class="hdmenu">
+				<ul class="nav navbar-nav" id="a636d625eb8b806c6705e3886e27e3231_MenuTop_mainmenu">
+				
+					<li   id="Hln_3777" class="dropdown" ><a role="button" aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="/p/412-1000-1058.php" title="Click to go 認識宜大">認識宜大</a><ul class="dropdown-menu"><li  id="Hln_3903"><a href="/p/412-1000-1058.php" title="Click to go 認識宜大">認識宜大</a></li><li  id="Hln_3890"><a href="/p/412-1000-1047.php" title="Click to go 校徽">校徽</a></li><li  id="Hln_3891"><a href="/p/412-1000-1310.php" target="_blank"  title="Click to go 校訓(另開新視窗)">校訓</a></li><li  id="Hln_3892"><a href="/p/412-1000-1049.php" title="Click to go 校史">校史</a></li><li  id="Hln_3893"><a href="/p/412-1000-1050.php" title="Click to go 歷任校長">歷任校長</a></li><li  id="Hln_3894"><a href="/p/412-1000-6092.php" title="Click to go 教育目標">教育目標</a></li><li  id="Hln_3895"><a href="/p/412-1000-1056.php" title="Click to go 宜大報導">宜大報導</a></li><li  id="Hln_3896"><a href="/p/412-1000-1055.php" title="Click to go 多媒體簡介">多媒體簡介</a></li><li  id="Hln_3898"><a href="/p/412-1000-1054.php" title="Click to go 名譽博士">名譽博士</a></li><li  id="Hln_3899"><a href="/p/412-1000-1051.php" title="Click to go 校地導覽">校地導覽</a></li><li  id="Hln_3900"><a href="/p/412-1000-1052.php" title="Click to go 交通位置">交通位置</a></li></ul></li>
+				
+					<li   id="Hln_3779" ><a  href="/p/412-1000-82.php" title="Click to go 行政單位">行政單位</a></li>
+				
+					<li   id="Hln_3780" ><a  href="/p/412-1000-84.php" title="Click to go 學術單位">學術單位</a></li>
+				
+					<li   id="Hln_3781" ><a  href="/p/412-1000-1046.php" title="Click to go 研究中心">研究中心</a></li>
+				
+					<li   id="Hln_3782" ><a  href="https://admniu.niu.edu.tw/" target="_blank"  rel="noopener noreferrer"  title="Click to go 招生資訊(另開新視窗)">招生資訊</a></li>
+				
+					<li   id="Hln_3783" ><a  href="https://ccsys2.niu.edu.tw/donation/index.aspx?tag=B02" target="_blank"  rel="noopener noreferrer"  title="Click to go 快速捐款(另開新視窗)">快速捐款</a></li>
+				
+					<li   id="Hln_3784" ><a  href="/p/412-1000-2387.php" title="Click to go 宜大品牌">宜大品牌</a></li>
+				
+					<li   id="Hln_3902" ><a  href="/p/412-1000-4573.php" title="Click to go 榮譽榜">榮譽榜</a></li>
+				
+					<li   id="Hln_4485" ><a  href="https://aio.niu.edu.tw/" target="_blank"  rel="noopener noreferrer"  title="Click to go AI推動辦公室(另開新視窗)">AI推動辦公室</a></li>
+				
+					<li   id="Hln_4565" ><a  href="https://bulletin.niu.edu.tw/p/412-1076-6216.php" target="_blank"  rel="noopener noreferrer"  title="Click to go 百年校慶(另開新視窗)">百年校慶</a></li>
+				
+        		
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+	
+
+<script language="javascript">
+
+	tabSwitch("a636d625eb8b806c6705e3886e27e3231_MenuTop_mainmenu");
+
+
+</script>
+
+         
+         </div>
+</div>
+</div>
+
+<div id="banner">&nbsp;</div>
+<script>
+        $(document).ready(function () {
+           $.hajaxOpenUrl("/app/index.php?Action=mobileloadmod&Type=mobile_sz_mstr&Nbr=170", '#banner');
+           $.hajaxOpenUrl("/app/index.php?Action=mobileloadmod&Type=mobilesch&Nbr=0", '#headsearch');
+setTimeout(function(){ 
+ $('a.focusable, .mlogo a').attr('tabindex', '1');
+  $('.minnav a').attr('tabindex', '2');
+ $('.header input.form-control,.header .hsearch .btn').attr('tabindex', '3');
+ }, 2000);
+        $(document).ready(function ($) {
+          $(".navbar-toggle").on("click", function () {
+                if ($(this).parents(".mycollapse").hasClass("open")) {
+                   $(".mycollapse").removeClass("open");
+               } else {
+                    $(".mycollapse").removeClass("open");
+                    $(this).parents(".mycollapse").addClass("open");
+         }
+        });
+    });
+        });
+    </script></div>
+      
+      
+   
+
+
+
+
+
+
+	
+	</div>
+</div>
+
+
+
+
+	</div>
+</div>
+<script language="javascript">
+
+	tabSwitch("a636d625eb8b806c6705e3886e27e3231_MenuTop");
+
+
+
+if(typeof(_LoginHln)=='undefined') var _LoginHln = new hashUtil();
+
+if(typeof(_LogoutHln)=='undefined') var _LogoutHln = new hashUtil();
+
+if(typeof(_HomeHln)=='undefined') var _HomeHln = new hashUtil();
+
+if(typeof(_InternalHln)=='undefined') var _InternalHln = new hashUtil();
+
+
+$(document).ready(function(){
+   if(typeof(loginStat)=='undefined') {
+   	if(popChkLogin()) loginStat="login";
+   	else loginStat="logout";
+	}
+	dealHln(isHome,loginStat,$('div.hdmenu'));
+
+	
+	
+		var html ="<li><a title=\"上方內容區\" accesskey=\"U\" href=\"#\" class=\"hd-accesskey\">:::</a></li>";
+		var anchor = "minnav";
+		var hlnCgId = "a636d625eb8b806c6705e3886e27e3231_MenuTop_"+anchor;
+		var headMenuId = "a636d625eb8b806c6705e3886e27e3231_MenuTop";
+		if($("#"+hlnCgId).length>0){
+			$("#"+hlnCgId).prepend(html);	
+		}else{
+			if($("#"+headMenuId).length>0)
+			$("#"+headMenuId).prepend(html);	
+		}
+	
+});
+
+var firstWidth = window.innerWidth;
+function mobilehead_widthChangeCb() {
+if((firstWidth>=767 && window.innerWidth<767) || (firstWidth<767 && window.innerWidth>=767))  location.reload();
+if(window.innerWidth <767) {
+setTimeout(()=>{
+	var div = document.getElementsByClassName('mycollapse');
+	if(div=='undefined' || div.length==0) div = document.getElementsByClassName('nav-toggle navbar-collapse iosScrollToggle');
+   div = div[0];
+   //var focusableElements = div.querySelectorAll('li>a[href], button, input[type="text"], select, textarea');
+   var focusableElements = div.querySelectorAll('a[href], button, input[type="text"], select, textarea');
+	focusableElements[focusableElements.length-1].addEventListener('keydown', function(event) {
+   	if (event.key === 'Tab') {
+      	$(".hdmenu .dropdown").removeClass("open");
+         var button= document.getElementsByClassName('navbar-toggle');
+         button= button[0];
+         button.click();
+      }
+	});
+},1000);
+}else{
+	var div = document.getElementsByClassName('mycollapse');
+   if(div=='undefined' || div.length==0) div = document.getElementsByClassName('nav-toggle navbar-collapse iosScrollToggle');
+   div = div[0];
+   var focusableElements = div.querySelectorAll('a[href]');
+   focusableElements[focusableElements.length-1].addEventListener('keydown', function(event) {
+      if (event.key === 'Tab') {
+         $(".hdmenu .dropdown").removeClass("open");
+      }
+   });
+}
+}
+window.addEventListener('resize', mobilehead_widthChangeCb);
+mobilehead_widthChangeCb();
+</script>
+<noscript>本功能需使用支援JavaScript之瀏覽器才能正常操作</noscript>
+<!-- generated at Mon Apr 27 2026 09:44:00 --></div>
+
+<main id="main-content">
+<div class="main">
+<div class="minner">
+
+	
+	
+<div class="row col1 row_0">
+	<div class="mrow ">
+		
+			
+			
+			
+			 
+		
+			
+			
+			
+			
+				
+        		
+         	
+				<div class="col col_02">
+					<div class="mcol">
+					
+						
+						
+						<div id="Dyn_2_1" class="M10025  ">
+
+<div class="module module-special md_style2">
+<div class="mouter">
+	<header class="mt  mt-subhead">
+	 
+	<h2 class="mt-title">VIDEO</h2><div class="mt-sub-title">宜大影音</div>
+</header>
+
+	<section class="mb">
+		
+      
+      	
+	<div class="row listBS">
+	
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://www.youtube.com/embed/QALE_21snbI?si=f7hTH2LA5kg8f9hc"  title="國立宜蘭大學創校百週年形象影片(原頁面開啟)">
+				國立宜蘭大學創校百週年形象影片
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" scrolling="no" src="https://www.youtube.com/embed/QALE_21snbI?si=yfL8RkYpbIcYzW1Z"【國立宜蘭大學創校百週年形象影片】"></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://youtu.be/MeOBfLkC6hQ?si=PklwJio5aOWzE6ae"  title="你未來的故事，從國立宜蘭大學開始(原頁面開啟)">
+				你未來的故事，從國立宜蘭大學開始
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" scrolling="no" src="https://www.youtube.com/embed/MeOBfLkC6hQ?si=PklwJio5aOWzE6ae"【國立宜蘭大學招生宣傳影片】你未來的故事，從國立宜蘭大學開始"></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://www.youtube.com/watch?v=7aBj69JMFZA"  target="_blank" rel='noopener noreferrer'  title="國立宜蘭大學人文及管理學院簡介(另開新視窗)">
+				國立宜蘭大學人文及管理學院簡介
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="" src="https://www.youtube.com/embed/7aBj69JMFZA?si=jzDFXWjp5hE9c3XP" title="國立宜蘭大學人文及管理學院簡介" width=""></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://www.youtube.com/watch?v=PnzJaFFLTa8"  target="_blank" rel='noopener noreferrer'  title="國立宜蘭大學工學院簡介(另開新視窗)">
+				國立宜蘭大學工學院簡介
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="" src="https://www.youtube.com/embed/PnzJaFFLTa8" title="國立宜蘭大學工學院簡介" width=""></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		</div><div class="row listBS">
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://www.youtube.com/watch?v=bVEkrxzEpkY"  target="_blank" rel='noopener noreferrer'  title="國立宜蘭大學生物資源學院簡介(另開新視窗)">
+				國立宜蘭大學生物資源學院簡介
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="" src="https://www.youtube.com/embed/bVEkrxzEpkY" title="國立宜蘭大學生物資源學院簡介" width=""></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://www.youtube.com/watch?v=qRmEM1QIDqU"  target="_blank" rel='noopener noreferrer'  title="國立宜蘭大學電機資訊學院簡介(另開新視窗)">
+				國立宜蘭大學電機資訊學院簡介
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" height="" src="https://www.youtube.com/embed/qRmEM1QIDqU" title="國立宜蘭大學電機資訊學院簡介" width=""></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://youtu.be/6xr5JruoSME?si=TY-lTxFKxeEgwO1i"  title="2024宜蘭大學永續報告書成果(原頁面開啟)">
+				2024宜蘭大學永續報告書成果
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" scrolling="no" src="https://www.youtube.com/embed/6xr5JruoSME?si=r6WRIdPnA1jEeQgA"【國立宜蘭大學招生宣傳影片】你未來的故事，從國立宜蘭大學開始"></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-td col-sm-3">
+<div class="mbox">
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			<a href="https://www.youtube.com/embed/KJwCOFJaAg0?si=QmLrIkQfR3Y4rUTb"  title="國立宜蘭大學百年傳承・歷屆校長訪談特輯(原頁面開啟)">
+				國立宜蘭大學百年傳承・歷屆校長訪談特輯
+			</a>
+			
+			
+			
+		</div>
+		<div class="mdetail">
+			
+			<div class="meditor">
+			<div class="embedvideo"><iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" frameborder="0" scrolling="no" src="https://www.youtube.com/embed/KJwCOFJaAg0?si=QmLrIkQfR3Y4rUTb"【國立宜蘭大學百年校慶：百年傳承・歷屆校長訪談特輯】"></iframe></div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+	</div>
+
+
+      
+   	
+			<p class="more"><a href="https://www.niu.edu.tw/p/403-1000-44-1.php" title="more video">more video</a></p>
+   	
+	</section>
+</div>
+</div>
+
+</div>
+
+					
+						
+						
+						<div id="Dyn_2_2" class="M42  ">
+
+<div class="module module-um md_style99">
+   <div class="mouter">
+	<header class="mt mthide ">
+	 
+	
+</header>
+
+	<section class="mb">
+		<div class="minner">
+			<div class="meditor">
+			<a href="#start-C" title='主要內容區' accesskey="C" style="text-decoration:none" id="start-C">:::</a> 
+			</div>
+		</div>
+	</section>
+	</div>
+</div>
+
+</div>
+
+					
+						
+						
+						<div id="Dyn_2_3" class="M10019  ">
+
+<div class="module module-special md_style1">
+<div class="mouter">
+	<header class="mt  mt-subhead">
+	 
+	<h2 class="mt-title">NEWS</h2><div class="mt-sub-title">校園焦點</div>
+</header>
+
+	<section class="mb">
+		
+      
+      	
+	<div class="row listBS">
+	
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/878/m/mczh-tw400x400_small71874_358523040484.jpg"  class="img-responsive" alt="宜大百年校慶前奏曲 「農林之光 雨澤蘭陽」郭雨新特展開幕 傳承土地與民主精神圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71874,r43.php"  title="宜大百年校慶前奏曲 「農林之光 雨澤蘭陽」郭雨新特展開幕 傳承土地與民主精神(原頁面開啟)">
+					宜大百年校慶前奏曲 「農林之光 雨澤蘭陽」郭雨新特展開幕 傳承土地與民主精神
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/159/m/mczh-tw400x400_small71567_295011195936.jpg"  class="img-responsive" alt="宜大校慶耀百年！生資院「三生產學成果展」5月4日熱烈登場-Let's Go！闖關拿好禮！圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71567,r43.php"  title="宜大校慶耀百年！生資院「三生產學成果展」5月4日熱烈登場-Let's Go！闖關拿好禮！(原頁面開啟)">
+					宜大校慶耀百年！生資院「三生產學成果展」5月4日熱烈登場-Let's Go！闖關拿好禮！
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/499/m/mczh-tw400x400_small71612_278171842614.jpg"  class="img-responsive" alt="國立宜蘭大學「老天有眼」團隊榮獲數發部衛星創新大賽評審特別獎！首創「衛星物聯網」深山防護網守護百年林木圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71612,r43.php"  title="國立宜蘭大學「老天有眼」團隊榮獲數發部衛星創新大賽評審特別獎！首創「衛星物聯網」深山防護網守護百年林木(原頁面開啟)">
+					國立宜蘭大學「老天有眼」團隊榮獲數發部衛星創新大賽評審特別獎！首創「衛星物聯網」深山防護網守護百年林木
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/807/m/mczh-tw400x400_small71495_270778992509.jpg"  class="img-responsive" alt="國立宜蘭大學2026職涯發展季啟動典禮 暨校園徵才博覽會圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71495,r43.php"  title="國立宜蘭大學2026職涯發展季啟動典禮 暨校園徵才博覽會(原頁面開啟)">
+					國立宜蘭大學2026職涯發展季啟動典禮 暨校園徵才博覽會
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		</div><div class="row listBS">
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/99/m/mczh-tw400x400_small71475_204191860752.jpg"  class="img-responsive" alt="國立宜蘭大學ESG實力爆發，勇奪第七屆《遠見》USR績優獎圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71475,r43.php"  title="國立宜蘭大學ESG實力爆發，勇奪第七屆《遠見》USR績優獎(原頁面開啟)">
+					國立宜蘭大學ESG實力爆發，勇奪第七屆《遠見》USR績優獎
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/702/m/mczh-tw400x400_small71470_21397013576.jpg"  class="img-responsive" alt="森林系成企業即戰力助攻永續報告書、碳盤查與ESG轉型圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71470,r43.php"  title="森林系成企業即戰力助攻永續報告書、碳盤查與ESG轉型(原頁面開啟)">
+					森林系成企業即戰力助攻永續報告書、碳盤查與ESG轉型
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/635/m/mczh-tw400x400_small71471_128793314634.jpg"  class="img-responsive" alt="第10屆龜山島文學獎新書發表會　「此書 此刻 耀百年」見證青春書寫力量圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71471,r43.php"  title="第10屆龜山島文學獎新書發表會　「此書 此刻 耀百年」見證青春書寫力量(原頁面開啟)">
+					第10屆龜山島文學獎新書發表會　「此書 此刻 耀百年」見證青春書寫力量
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+		
+		<div class="d-item v-it col-sm-3">
+<div class="mbox">
+	<div class="d-img">
+		
+		<a><img src="/var/file/0/1000/pictures/743/m/mczh-tw400x400_small71469_206844712711.jpg"  class="img-responsive" alt="面對氣候變遷挑戰，國立自然科學博物館黃文山館長解析生物多樣性危機圖片" /></a>
+	</div>
+	<div class="d-txt">
+		<div class="mtitle">
+			
+			
+			
+				<a href="https://www.niu.edu.tw/p/406-1000-71469,r43.php"  title="面對氣候變遷挑戰，國立自然科學博物館黃文山館長解析生物多樣性危機(原頁面開啟)">
+					面對氣候變遷挑戰，國立自然科學博物館黃文山館長解析生物多樣性危機
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	
+</div>
+</div>
+
+		
+	
+	</div>
+
+
+      
+   	
+			<p class="more"><a href="https://www.niu.edu.tw/p/403-1000-43-1.php" title="more news">more news</a></p>
+   	
+	</section>
+</div>
+</div>
+
+</div>
+
+					
+						
+						
+						<div id="Dyn_2_4" class="M10125  ">
+
+<script>
+$(document).ready(function() {
+	$('#a578e6b32ef7fc538cbbc00e9b7f06f24_Div .nav-tabs a').keydown(function (e) {
+		if (e.shiftKey && e.keyCode === 9) {
+	   	$(this).parent().prev().children().tab('show');
+	   	$(this).parent().prev().children().prop("tabindex","0");
+  		}
+	});
+	$('#a578e6b32ef7fc538cbbc00e9b7f06f24_Div .nav-tabs a').focus(function (e) {
+		a578e6b32ef7fc538cbbc00e9b7f06f24_goto(this);
+	});
+});
+function a578e6b32ef7fc538cbbc00e9b7f06f24_goto(obj){
+		$(obj).tab('show');
+		$(obj).prop("tabindex","0");
+		$(obj).attr("aria-selected","true");
+		$(obj).parent().siblings().children().prop("tabindex","-1");
+		$(obj).parent().siblings().children().removeAttr("aria-selected");
+		$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_0').prop("tabindex","0");
+}
+</script>
+<div id="a578e6b32ef7fc538cbbc00e9b7f06f24_Div" class="module module-complex md_style1">
+	<div class="minner">
+		<header class="mt  mt-subhead">
+	 
+	<h2 class="mt-title">EVENTS</h2><div class="mt-sub-title">校園公告</div>
+</header>
+
+		<section class="mb">
+			<nav><ul role="presentation" class="nav nav-tabs">
+			
+			
+			<li role="presentation" class="active"><a title="最新"  id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_0"  tabindex="0" href="#cmb_33_0" data-toggle="tab" role="tab" aria-selected="true"><h2>最新</h2></a></li>
+			
+			
+			
+			
+			
+			<li role="presentation"><a title="一般" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_1"  tabindex="-1" href="#cmb_33_1" data-toggle="tab" role="tab"><h2>一般</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="重大" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_2"  tabindex="-1" href="#cmb_33_2" data-toggle="tab" role="tab"><h2>重大</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="學術" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_3"  tabindex="-1" href="#cmb_33_3" data-toggle="tab" role="tab"><h2>學術</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="招生" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_4"  tabindex="-1" href="#cmb_33_4" data-toggle="tab" role="tab"><h2>招生</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="活動(本校)" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_5"  tabindex="-1" href="#cmb_33_5" data-toggle="tab" role="tab"><h2>活動(本校)</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="活動(外校)" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_6"  tabindex="-1" href="#cmb_33_6" data-toggle="tab" role="tab"><h2>活動(外校)</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="競賽" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_7"  tabindex="-1" href="#cmb_33_7" data-toggle="tab" role="tab"><h2>競賽</h2></a></li>
+			
+			
+			
+			
+			<li role="presentation"><a title="徵才" id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_8"  tabindex="-1" href="#cmb_33_8" data-toggle="tab" role="tab"><h2>徵才</h2></a></li>
+			
+			
+			</ul></nav>
+			<div class="tab-content">
+				
+				
+				
+				
+				
+					<div class="tab-pane fade in active" id="cmb_33_0">
+						<div id="sm_div_cmb_33_12624"></div>
+	               <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1019','#sm_div_cmb_33_12624','',function(){menuDropAct(0);});})</script>
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_1_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_1').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+					</div>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_1">
+						<div id="sm_div_cmb_33_12625"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1021','#sm_div_cmb_33_12625','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_2_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_2').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_2">
+						<div id="sm_div_cmb_33_12626"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1022','#sm_div_cmb_33_12626','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_3_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_3').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_3">
+						<div id="sm_div_cmb_33_12627"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1023','#sm_div_cmb_33_12627','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_4_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_4').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_4">
+						<div id="sm_div_cmb_33_12629"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1025','#sm_div_cmb_33_12629','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_5_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_5').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_5">
+						<div id="sm_div_cmb_33_12630"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1026','#sm_div_cmb_33_12630','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_6_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_6').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_6">
+						<div id="sm_div_cmb_33_18106"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1036','#sm_div_cmb_33_18106','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_7_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_7').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_7">
+						<div id="sm_div_cmb_33_12631"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1029','#sm_div_cmb_33_12631','',function(){menuDropAct(0);});})</script>
+
+						
+							<a id="sm_a578e6b32ef7fc538cbbc00e9b7f06f24_8_href" href="" onkeyup="$('#sm_a578e6b32ef7fc538cbbc00e9b7f06f24_8').focus();"><img  alt="" src="/images/clear.gif" /></a>
+						
+
+					</div>
+            
+				
+				
+				
+				
+				
+				
+				
+					<div class="tab-pane fade" id="cmb_33_8">
+						<div id="sm_div_cmb_33_12628"></div>
+                  <script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_asso_cg_mstr&Nbr=1024','#sm_div_cmb_33_12628','',function(){menuDropAct(0);});})</script>
+
+						
+
+					</div>
+            
+				
+				
+			</div>
+		</section>
+	</div>
+</div>
+
+</div>
+
+					
+					</div>
+				</div> 
+			 
+		
+			
+			
+			
+			 
+		
+	</div>
+</div>
+	
+
+	
+	
+<div class="row col1 row_1">
+	<div class="mrow ">
+		
+			
+			
+			
+			 
+		
+			
+			
+			
+			
+				
+        		
+         	
+				<div class="col col_02">
+					<div class="mcol">
+					
+						
+						
+						<div id="Dyn_1_2_1" class="M14238  ">
+
+<div class="module module-um md_style99">
+   <div class="mouter">
+	<header class="mt  mt-subhead">
+	 
+	<h2 class="mt-title">LINKS</h2><div class="mt-sub-title">相關連結</div>
+</header>
+
+	<section class="mb">
+		<div class="minner">
+			<div class="meditor">
+			<style>
+
+</style> 
+			</div>
+		</div>
+	</section>
+	</div>
+</div>
+
+</div>
+
+					
+						
+						
+						<div id="Dyn_1_2_2" class="M12559  ">
+
+<div class="module module-compound">
+		<div class="mouter">
+			
+				
+				
+				<div class="mbox" style="width: 25.00%">
+					<div class="sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12980"></div>
+					<script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_ln_mstr&Nbr=242','.sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12980','',function(){menuDropAct(0);});})</script>
+				</div>
+			
+				
+				
+				<div class="mbox" style="width: 25.00%">
+					<div class="sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12981"></div>
+					<script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_ln_mstr&Nbr=243','.sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12981','',function(){menuDropAct(0);});})</script>
+				</div>
+			
+				
+				
+				<div class="mbox" style="width: 25.00%">
+					<div class="sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12983"></div>
+					<script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_ln_mstr&Nbr=245','.sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12983','',function(){menuDropAct(0);});})</script>
+				</div>
+			
+				
+				
+				<div class="mbox" style="width: 25.00%">
+					<div class="sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12984"></div>
+					<script>$(document).ready(function() {$.hajaxOpenUrl('/app/index.php?Action=mobileloadmod&Type=mobile_ln_mstr&Nbr=246','.sm_div_compound_a4714f86a0370a6a31ef78c5ebafaafc2_12984','',function(){menuDropAct(0);});})</script>
+				</div>
+			
+		</div>
+	</div>
+
+</div>
+
+					
+					</div>
+				</div> 
+			 
+		
+			
+			
+			
+			 
+		
+	</div>
+</div>
+	
+
+	
+	
+
+	
+	
+
+	
+	
+
+</div>
+</div>
+</main>
+
+
+
+<div id="Dyn_footer">
+<div class="footer">
+<div class="minner container">
+
+
+
+
+
+
+
+<div class="copyright">
+<div class="meditor">
+	<style type="text/css">body:not(.page_mobilehome) .module-complex:before, 
+body:not(.page_mobilehome) .md_style2:before{
+left:0;
+right:0;
+}
+body:not(.page_mobilehome) #banner{display:none;}
+@media (max-width: 767px){
+#collapseExample3, #collapseExample2{display:none;}
+.open #collapseExample3,.open #collapseExample2{display:block;}
+.open #collapseExample2{min-height:450px}
+.open #collapseExample3{min-height:350px}
+.headnavcust .nav-toggle.navbar-collapse {
+    display: block;
+}
+.mlogo {
+    width: 65%;
+}
+.mlogo img{width:100%;}
+}
+</style>
+<div class="foot">
+<div class="footlogo col-md-2"><a alt="國立宜蘭大學" href="#"><img alt="宜蘭大學 Logo" src="/var/file/0/1000/img/1145/flogo.png" /></a></div>
+
+<div class="address col-md-8">
+<p>地址 : 260007 宜蘭縣宜蘭市神農路一段1號 ｜ 統一編號：02415271｜ 警衛室：(03)931-7555<br />
+電話總機：(03)935-7400, 0972-570030 ｜ 校園安全暨災害防救通報 : (03)936-4006 ｜ <a href="https://bulletin2.niu.edu.tw/files/11-1015-2665.php" target="_blank" title="校園性別事件通報">校園性別事件通報（請點擊）</a></p>
+</div>
+</div>
+
+<div class="footcopyright">Copyright &copy; 2021 國立宜蘭大學 National ilan University NIU｜<a href="https://accessibility.moda.gov.tw/Applications/Detail?category=20230809093306" title="無障礙網站"><img alt="通過AA檢測等級無障礙網頁檢測" height="31" src="/var/file/0/1000/img/587/236978258.png" style="border-width: 0px; border-style: solid;" width="88" /></a></div>
+<script>
+    $(document).ready(function(){
+        $.hajaxOpenUrl("/app/index.php?Action=mobileloadmod&Type=mobile_ln_mstr&Nbr=405",'#privacy');
+        $.hajaxOpenUrl("/app/index.php?Action=mobileloadmod&Type=mobile_ln_mstr&Nbr=404",'#shares');
+    });
+    </script>
+
+<p>　　　　　　　　　 　　　　　　　　　</p>
+
+	
+</div>
+</div>
+
+
+
+
+
+</div>
+</div>
+<!-- generated at Thu Feb 12 2026 14:31:48 --></div>
+
+
+</div>
+</div>
+<div class="fpbgvideo"></div>
+
+
+
+
+
+
+
+<div id="_pop_tips" class="mtips">
+	<div class="mbox">
+	</div>
+</div>
+<div id="_pop_dialog" class="mdialog">
+	<div class="minner">
+		<div class="mcont">
+		</div>
+		<footer class="mdialog-foot">
+        	<button type="submit" class="mbtn mbtn-s">OK</button>
+        	<button type="submit" class="mbtn mbtn-c">Cancel</button>
+		</footer>
+	</div>
+</div>
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+	<!-- Background of PhotoSwipe. 
+	It's a separate element, as animating opacity is faster than rgba(). -->
+	<div class="pswp__bg"></div>
+		<!-- Slides wrapper with overflow:hidden. -->
+		<div class="pswp__scroll-wrap">
+		<!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+		<!-- don't modify these 3 pswp__item elements, data is added later on. -->
+		<div class="pswp__container">
+			 <div class="pswp__item"></div>
+			 <div class="pswp__item"></div>
+			 <div class="pswp__item"></div>
+		</div>
+		<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+		<div class="pswp__ui pswp__ui--hidden">
+			<div class="pswp__top-bar">
+				<!--  Controls are self-explanatory. Order can be changed. -->
+					<div class="pswp__counter"></div>
+					<button class="pswp__button pswp__button--close" title="Close (Esc)">Close (Esc)</button>
+					<button class="pswp__button pswp__button--share" title="Share">Share</button>
+					<button class="pswp__button pswp__button--fs" title="Toggle fullscreen">Toggle fullscreen</button>
+					<button class="pswp__button pswp__button--zoom" title="Zoom in/out">Zoom in/out</button>
+				  <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+				  <!-- element will get class pswp__preloader-active when preloader is running -->
+				  <div class="pswp__preloader">
+						<div class="pswp__preloader__icn">
+						  <div class="pswp__preloader__cut">
+							 <div class="pswp__preloader__donut"></div>
+						  </div>
+						</div>
+				  </div>
+			 </div>
+			 <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+				  <div class="pswp__share-tooltip"></div> 
+			 </div>
+			 <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">Previous (arrow left)</button>
+			 <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">Next (arrow right)</button>
+			 <div class="pswp__caption">
+				  <div class="pswp__caption__center"></div>
+			 </div>
+	</div>
+</div>
+</div>
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VK6LTHRB4H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VK6LTHRB4H');
+</script>
+<!--<script>NProgress.done();</script>-->
+<script>
+function popChkLogin(){
+	if(typeof(loginStat)=='undefined') {
+   	var chkstat=0;
+      var chkUrl='/app/index.php?Action=mobilelogin';
+      var chkData = {Op:'chklogin'};
+      var chkObj=$.hajaxReturn(chkUrl,chkData);
+   	chkstat=chkObj.stat;
+		if(chkstat) {
+			loginStat="login"; 
+			return true;
+		}else {
+			loginStat="logout"; 
+			return false;
+		}	
+	}else {
+		if(loginStat=="login") return true;
+		else return false;
+	}
+}
+
+$(document).ready(function(){
+   $('head').append("<style>@media (min-width: 481px) {.row_0 .col_01 { width: 0%;}.row_0 .col_02 { width: 100%;}.row_0 .col_03 { width: 0%;}}@media (min-width: 481px) {.row_1 .col_01 { width: 0%;}.row_1 .col_02 { width: 100%;}.row_1 .col_03 { width: 0%;}}</style>");
+});
+
+</script>
 </body>
 </html>
+<!-- generated at Wed Apr 29 2026 13:28:21 -->
