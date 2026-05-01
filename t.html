@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>目前時間顯示</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      padding: 24px 0;
+    }
+
+    .page {
+      width: min(92vw, 680px);
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      width: min(90vw, 520px);
+      margin: 0 auto;
+      padding: 28px;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      color: #222;
+    }
+
+    #time {
+      margin: 18px 0 24px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #0b57d0;
+      letter-spacing: 1px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #0b57d0;
+      color: #fff;
+    }
+
+    button:hover {
+      background: #0848ad;
+    }
+
+    .chat-card {
+      text-align: left;
+      width: min(90vw, 620px);
+      margin: 0 auto;
+    }
+
+    .chat-title {
+      margin: 0 0 12px;
+      color: #222;
+      font-size: 22px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      color: #333;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccd3e0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      color: #222;
+    }
+
+    #chatLog {
+      height: 280px;
+      overflow-y: auto;
+      border: 1px solid #d7ddeb;
+      border-radius: 12px;
+      padding: 12px;
+      background: #fafcff;
+      margin-bottom: 12px;
+    }
+
+    .msg {
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .msg.user {
+      background: #e7f0ff;
+    }
+
+    .msg.assistant {
+      background: #eef7eb;
+    }
+
+    .chat-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: #555;
+      font-size: 13px;
+      min-height: 20px;
+    }
+
+    @media print {
+      button,
+      .chat-card {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <h1>現在時間</h1>
+      <div id="time">--:--:--</div>
+      <button onclick="window.print()">列印畫面</button>
+    </div>
+
+    <div class="card chat-card">
+      <h2 class="chat-title">小聊天室（ChatGPT）</h2>
+
+      <div class="field">
+        <label for="model">模型名稱</label>
+        <input id="model" type="text" value="gpt-5.5" />
+      </div>
+
+      <div class="field">
+        <label>金鑰來源</label>
+        <input type="text" value=".env (由後端讀取)" disabled />
+      </div>
+
+      <div id="chatLog"></div>
+
+      <div class="chat-row">
+        <textarea id="userInput" rows="3" placeholder="輸入你想問的內容..."></textarea>
+        <button id="sendBtn" type="button">送出</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+
+  <script>
+    const timeEl = document.getElementById("time");
+    const modelEl = document.getElementById("model");
+    const userInputEl = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const chatLogEl = document.getElementById("chatLog");
+    const statusEl = document.getElementById("status");
+    const messages = [];
+
+    function updateTime() {
+      const now = new Date();
+      const text = now.toLocaleString("zh-TW", {
+        hour12: false,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      timeEl.textContent = text;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    // 页面加载时做一次健康检查：后端是否运行、.env 是否有 OPENAI_API_KEY
+    (async () => {
+      try {
+        const resp = await fetch("/api/health", { method: "GET" });
+        const data = await resp.json();
+        if (!data.hasOpenAIKey) {
+          statusEl.textContent = "后端未找到 OPENAI_API_KEY，请检查 .env。";
+        }
+      } catch {
+        statusEl.textContent = "无法连接到后端（http://localhost:3000）。请先运行 server.js。";
+      }
+    })();
+
+    function appendMessage(role, content) {
+      const div = document.createElement("div");
+      div.className = "msg " + role;
+      div.textContent = (role === "user" ? "你： " : "ChatGPT： ") + content;
+      chatLogEl.appendChild(div);
+      chatLogEl.scrollTop = chatLogEl.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const model = modelEl.value.trim() || "gpt-4o-mini";
+      const text = userInputEl.value.trim();
+
+      if (!text) {
+        statusEl.textContent = "請先輸入訊息。";
+        return;
+      }
+
+      messages.push({ role: "user", content: text });
+      appendMessage("user", text);
+      userInputEl.value = "";
+      statusEl.textContent = "ChatGPT 回覆中...";
+      sendBtn.disabled = true;
+
+      try {
+        const resp = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model,
+            messages
+          })
+        });
+
+        const rawText = await resp.text();
+        let data = {};
+        if (rawText) {
+          try {
+            data = JSON.parse(rawText);
+          } catch {
+            throw new Error("伺服器回傳非 JSON，請確認是從 http://localhost:3000 開啟頁面。");
+          }
+        }
+
+        if (!resp.ok) {
+          const httpPart = data.error?.status
+            ? ` (HTTP ${data.error.status})`
+            : resp.status
+              ? ` (HTTP ${resp.status})`
+              : "";
+          const detailObj = data.error?.details || data.error?.raw || null;
+          const detailText = detailObj
+            ? `，細節：${typeof detailObj === "string" ? detailObj : JSON.stringify(detailObj)}`
+            : "";
+          throw new Error((data.error?.message || "API 呼叫失敗") + httpPart + detailText);
+        }
+
+        const reply = data.reply || "(沒有回覆內容)";
+        messages.push({ role: "assistant", content: reply });
+        appendMessage("assistant", reply);
+        statusEl.textContent = "完成。";
+      } catch (err) {
+        statusEl.textContent = "錯誤：" + (err.message || "未知錯誤");
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    userInputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
